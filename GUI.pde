@@ -17,24 +17,25 @@ class GUI {
     displayCursor();
     displayWords();
   }
-  
+
   private void displayWords() {
     fill(255);
     strokeWeight(1.5);
-    stroke(255,0,0);
+    stroke(255, 0, 0);
     rectMode(CORNER);
-    rect(22,30,265,67);
+    rect(22, 30, 300, 97);
     rectMode(CENTER);
-    
+
     textAlign(LEFT);
     textSize(30);
     fill(0);
     String displayAmmo = nf(world.thisPlayer.round, 2, 0);
-    if (world.weaponInfo[world.thisPlayer.weaponType][3] == -1) displayAmmo = "Inf";
+    if (Info.weaponInfo[world.thisPlayer.weaponType][3] == -1) displayAmmo = "Inf";
     if (world.thisPlayer.weaponType == 0) displayAmmo = "NA";
-    
-    text("Weapon: "+world.weaponName[world.thisPlayer.weaponType], 30, 60);
+
+    text("Weapon: "+Info.weaponName[world.thisPlayer.weaponType], 30, 60);
     text("Ammo: "+displayAmmo, 30, 90);
+    text("Health: "+nf(world.thisPlayer.health,4,0),30,120);
   }
 
   private void displayMinimap() {
@@ -59,7 +60,7 @@ class GUI {
 
   private void displayCursor() {
     float linesize = 24;
-    stroke(120);
+    stroke(255);
     strokeWeight(3);
     point(cursor.x, cursor.y);
     line(cursor.x-linesize/2, cursor.y, cursor.x-linesize/4, cursor.y);

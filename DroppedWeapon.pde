@@ -1,8 +1,10 @@
 class DroppedWeapon extends Entity {
 
-  int type, rounds;
+  int type;
+  float rounds;
+  
 
-  DroppedWeapon(float i_x, float i_y, float w, float h, int type, int i_rounds) {
+  DroppedWeapon(float i_x, float i_y, float w, float h, int type, float i_rounds) {
     super(i_x, i_y, w, h);
     this.type = type;
     rounds = i_rounds;
@@ -11,10 +13,10 @@ class DroppedWeapon extends Entity {
 
   public void render(PImage[] image) {
     pushMatrix();
-    translate(dispPos.x,dispPos.y);
+    translate(dispPos.x, dispPos.y);
     scale(1.33);
     rotate(orientation);
-    image(image[4],0,0);
+    image(image[type+5], 0, 0);
     popMatrix();
   }
 

@@ -1,5 +1,6 @@
 //WarmVector game created by Wyatt Ades
 
+import gifAnimation.*;
 import ddf.minim.*;
 import java.awt.geom.*;
 
@@ -8,17 +9,20 @@ Minim minim;
 String[] audioStrings = { //stores the names of all the audio files
 }; 
 String[] imageStrings = { //stores the names of all the image files
-  "leveltiles_01", "levelmap_01","enemy_0_0","enemy_0_1","gun_0","bullet"
+  "leveltiles_01", "levelmap_01", "player_0_0", "player_0_1", "player_1_0", "player_1_1", "gun_0", "gun_1","gun_2","gun_3","bullet"
 }; 
+PImage[] hitParticles;
+PImage[] help;
 AudioPlayer[] audio = new AudioPlayer[audioStrings.length]; //creates an array for the audio files
 PImage[] image = new PImage[imageStrings.length]; //creates an array for the image files
 
 Input input;
 World world;
 GUI gui;
-StartMenu startmenu;
+StartMenu startMenu;
+Sprite helpMenu;
 
-int level,stage;
+int level;
 
 boolean sketchFullScreen() {
   return false;
@@ -26,14 +30,14 @@ boolean sketchFullScreen() {
 
 void beginProgram() {
   level = 0;
-  stage = 1;
   world = new World();
   gui = new GUI();
-  startmenu = new StartMenu();
+  startMenu = new StartMenu();
+  startMenu.stage = 1;
 }
 
 void setup() {
-  size(displayWidth*5/6,displayHeight*5/6);
+  size(displayWidth*5/6, displayHeight*5/6);
   frameRate(60);
   noCursor();
   rectMode(CENTER);
@@ -42,6 +46,9 @@ void setup() {
   input = new Input();
   minim = new Minim(this);
   loadFiles();
+  hitParticles = Gif.getPImages(this, "hit.gif");
+  help = Gif.getPImages(this, "help.gif");
+  helpMenu = new Sprite(help, width,height+100, 600, 450, 0, image.length, 750, true, 255);
   beginProgram();
 }
 
@@ -55,16 +62,20 @@ void loadFiles() {
 }
 
 void draw() {
-  background(200);
-  if (stage == 1) {
-    startmenu.render();
-    startmenu.update();
-  } else if (stage == 2 || stage == 3) {
+  background(120);
+  if (input.tab) startMenu.stage = 1;
+  if (startMenu.stage == 1) {
+    startMenu.render();
+    startMenu.update();
+  } else if (startMenu.stage == 2 || startMenu.stage == 3) {
     world.update();
     gui.update();
     world.render();
     gui.render();
-  } else if (stage == 10) {
+  } else if (startMenu.stage == 9) {
+    helpMenu.update();
+    helpMenu.render();
+  } else if (startMenu.stage == 10) {
     exit();
   }
 }
@@ -84,3 +95,4 @@ void mousePressed() {
 void mouseReleased() {
   input.releaseMouse(mouseButton);
 }
+

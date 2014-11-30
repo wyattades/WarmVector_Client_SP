@@ -1,12 +1,14 @@
 class StartMenu {
 
   ArrayList<Button> buttons;
+  int stage;
 
   StartMenu() {
     buttons = new ArrayList<Button>();
     buttons.add(new Button(width/2, height/2-100, 300, 80, color(100), color(255, 0, 0), "NEW GAME", 2));
-    buttons.add(new Button(width/2, height/2, 300, 80, color(100), color(255, 0, 0), "CONTINUE", 3));
+    //buttons.add(new Button(width/2, height/2, 300, 80, color(100), color(255, 0, 0), "CONTINUE", 3));
     buttons.add(new Button(width/2, height/2+200, 200, 80, color(100), color(255, 0, 0), "QUIT", 10));
+    buttons.add(new Button(width/2, height/2+100, 200, 80, color(100), color(255, 0, 0), "HELP", 9));
   }
 
   void render() {
