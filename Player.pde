@@ -63,9 +63,9 @@ class Player extends Entity {
   }
 
   boolean inTile(float x, float y) {
-    x = x/World.tileSize;
-    y = y/World.tileSize;
-    if (tilesArray[int(x)][int(y)] != World.TILE_EMPTY) return true;
+    x = x/Info.tileSize;
+    y = y/Info.tileSize;
+    if (tilesArray[int(x)][int(y)] != Info.TILE_EMPTY) return true;
     return false;
   }
 }

@@ -12,7 +12,7 @@ abstract class Entity {
     size = new PVector(w, h);
     dispPos = new PVector(0, 0);
     state = true;
-    health = 2000;
+    health = 200;
     collideBox = new Rectangle2D.Float(position.x-size.x/2, position.y-size.y/2, size.x, size.y);
   }
 

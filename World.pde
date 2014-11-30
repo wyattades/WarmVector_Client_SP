@@ -11,14 +11,7 @@ public class World {
   float dispW, dispH, mapW, mapH;
   int gridW, gridH, mouseRightTime;
 
-  static final int tileSize = 16;
-  static final int TILE_EMPTY = 0;
-  static final int TILE_SOLID = 1;
-  static final int TILE_WINDOW = 2;
-  static final int CREATE_ENEMY = 3;
-  static final float HY =  3.0000;
 
-  // {frequency,spread,amount,cartridge,damage};
   
   ThisPlayer thisPlayer;
 
@@ -30,8 +23,8 @@ public class World {
     sprites = new ArrayList<Sprite>();
     gridW = image[0].width;
     gridH = image[0].height;
-    mapW = gridW*tileSize;
-    mapH = gridH*tileSize;
+    mapW = gridW*Info.tileSize;
+    mapH = gridH*Info.tileSize;
     dispW = width;
     dispH = height;
     tilesArray = getLevelArray(image, level);
@@ -122,16 +115,16 @@ public class World {
   private void addTiles() {
     for (int i = 0; i < gridW; i++) {
       for (int j = 0; j < gridH; j++) {
-        if (tilesArray[i][j] == TILE_SOLID) tiles.add(new Tile((i+.5)*tileSize, (j+.5)*tileSize, tileSize, tileSize, TILE_SOLID));
-        else if (tilesArray[i][j] == TILE_WINDOW) tiles.add(new Tile((i+.5)*tileSize, (j+.5)*tileSize, tileSize, tileSize, TILE_WINDOW));
-        else if (tilesArray[i][j] == CREATE_ENEMY) tilesArray[i][j] = TILE_EMPTY;
+        if (tilesArray[i][j] == Info.TILE_SOLID) tiles.add(new Tile((i+.5)*Info.tileSize, (j+.5)*Info.tileSize, Info.tileSize, Info.tileSize, Info.TILE_SOLID));
+        else if (tilesArray[i][j] == Info.TILE_WINDOW) tiles.add(new Tile((i+.5)*Info.tileSize, (j+.5)*Info.tileSize, Info.tileSize, Info.tileSize, Info.TILE_WINDOW));
+        else if (tilesArray[i][j] == Info.CREATE_ENEMY) tilesArray[i][j] = Info.TILE_EMPTY;
       }
     }
     int[][] initialTilesArray = getLevelArray(image, level);
     for (int i = 0; i < gridW; i++) {
       for (int j = 0; j < gridH; j++) {
-        if (initialTilesArray[i][j] == CREATE_ENEMY) {
-          enemies.add(new Enemy(i*tileSize, j*tileSize, 48, 48, floor(random(1, 5)), random(-1, 1), random(-1, 1), tilesArray, tiles));
+        if (initialTilesArray[i][j] == Info.CREATE_ENEMY) {
+          enemies.add(new Enemy(i*Info.tileSize, j*Info.tileSize, 48, 48, floor(random(1, 5)), random(-1, 1), random(-1, 1), tilesArray, tiles));
         }
       }
     }
@@ -142,11 +135,11 @@ public class World {
     for (int i = 0; i < gridW; i++) {
       for (int j = 0; j < gridH; j++) {
         values[i][j] = image[level].get(i, j);
-        if (values[i][j] == color(0)) values[i][j] = TILE_SOLID;
-        else if (values[i][j] == color(0, 0, 255)) values[i][j] = TILE_WINDOW;
-        else if (values[i][j] == color(255, 0, 0)) values[i][j] = CREATE_ENEMY;
-        else values[i][j] = TILE_EMPTY;
-        if (i==0||i==gridW-1||j==0||j==gridH-1) values[i][j] = TILE_SOLID;
+        if (values[i][j] == color(0)) values[i][j] = Info.TILE_SOLID;
+        else if (values[i][j] == color(0, 0, 255)) values[i][j] = Info.TILE_WINDOW;
+        else if (values[i][j] == color(255, 0, 0)) values[i][j] = Info.CREATE_ENEMY;
+        else values[i][j] = Info.TILE_EMPTY;
+        if (i==0||i==gridW-1||j==0||j==gridH-1) values[i][j] = Info.TILE_SOLID;
       }
     }
     return values;

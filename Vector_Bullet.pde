@@ -25,14 +25,14 @@ class Vector_Bullet {
     for (int j = 0; j < world.tiles.size (); j++) {
       Tile t = world.tiles.get(j);
       if (t.collideBox.intersectsLine(i_pos.x, i_pos.y, i_pos.x+shot.x, i_pos.y+shot.y)==true) { //if bulletline intersects with tile 
-        if (t.type == World.TILE_SOLID) {
-          float dist = dist(t.position.x, t.position.y, i_pos.x, i_pos.y);
-          if (dist < previousDist) {
+        float dist = dist(t.position.x, t.position.y, i_pos.x, i_pos.y);
+        if (dist < previousDist) {
+          if (t.type == Info.TILE_SOLID) {
             previousDist = dist;
             hitEntity = t;
+          } else if (t.type == Info.TILE_WINDOW) {
+            world.sprites.add(new Sprite(image, t.position.x, t.position.y, 0, 0, shot.heading()+3.14, image.length, 50, false, t.hit));
           }
-        } else if (t.type == World.TILE_WINDOW) {
-          world.sprites.add(new Sprite(image, t.position.x, t.position.y, 0, 0, shot.heading()+3.14, image.length, 50, false, t.hit));
         }
       }
     }
@@ -57,7 +57,6 @@ class Vector_Bullet {
     shot.setMag(previousDist-20);
 
     hitEntity.health -= damage;
-    println(hitEntity.health);
     dispPos = gui.dispPos(i_pos).get();
   }
 

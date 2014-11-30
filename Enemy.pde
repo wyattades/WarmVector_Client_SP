@@ -67,7 +67,7 @@ class Enemy extends Player {
   boolean lineOfSight(PVector pos) {
     for (int i = 0; i < tiles.size (); i++) {
       Tile t = tiles.get(i);
-      if (t.collideBox.intersectsLine(position.x, position.y, pos.x, pos.y) && t.type == world.TILE_SOLID) { //if bulletline intersects with solid tile 
+      if (t.collideBox.intersectsLine(position.x, position.y, pos.x, pos.y) && t.type == Info.TILE_SOLID) { //if bulletline intersects with solid tile 
         return false;
       }
     }

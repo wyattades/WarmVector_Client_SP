@@ -23,7 +23,7 @@ class GUI {
     strokeWeight(1.5);
     stroke(255, 0, 0);
     rectMode(CORNER);
-    rect(22, 30, 300, 97);
+    rect(22, 30, 330, 97);
     rectMode(CENTER);
 
     textAlign(LEFT);
