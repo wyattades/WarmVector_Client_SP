@@ -3,16 +3,17 @@ class Player extends Entity {
   boolean valid;
   int weaponType, round, id, bulletTime;
   PVector velocity;
-  color f,s;
+  color hit;
+  float topSpeed;
 
   Player(float i_x, float i_y, float w, float h, int weaponType, int round) {
     super(i_x, i_y, w, h);
+    topSpeed = 8;
     bulletTime = millis();
     this.weaponType = weaponType;
     this.round = round;
     velocity = new PVector(0, 0);
-    f = color(#BF0208);
-    s = color(0);
+    hit = color(255,0,0);
   }
   
   void update() {
@@ -20,10 +21,11 @@ class Player extends Entity {
   }
 
   void updatePosition() {
+    updateCollideBox();
     position.add(velocity);
   }
 
-  void render() {
+  void render(PImage[] image) {
     pushMatrix();
     translate(dispPos.x, dispPos.y);
     rotate(orientation);   
@@ -36,18 +38,18 @@ class Player extends Entity {
     popMatrix();
   }
 
-  void updateVelX(World w, float velX) {
-    if ((velX > 0 && !collideTile(w, size.x/2, 0, 0, size.y*.3)) || (velX < 0  && !collideTile(w, -size.x/2, 0, 0, size.y*.3))) velocity.x = velX;
+  void updateVelX(int[][] tilesArray, float velX) {
+    if ((velX > 0 && !collideTile(tilesArray, size.x/2, 0, 0, size.y*.3)) || (velX < 0  && !collideTile(tilesArray, -size.x/2, 0, 0, size.y*.3))) velocity.x = velX;
   }
   
-  void updateVelY(World w, float velY) {
-    if ((velY > 0 && !collideTile(w, 0, size.y/2, size.x*.3, 0)) || (velY < 0  && !collideTile(w, 0, -size.y/2, size.x*.3, 0))) velocity.y = velY;
+  void updateVelY(int[][] tilesArray, float velY) {
+    if ((velY > 0 && !collideTile(tilesArray, 0, size.y/2, size.x*.3, 0)) || (velY < 0  && !collideTile(tilesArray, 0, -size.y/2, size.x*.3, 0))) velocity.y = velY;
   }
 
-  boolean collideTile(World w, float ax, float ay, float dx, float dy) {
-    if (w.collideTile(position.x+ax, position.y+ay)
-      || w.collideTile(position.x+ax+dx, position.y+ay+dy) 
-      || w.collideTile(position.x+ax-dx, position.y+ay-dy)) return true;
+  boolean collideTile(int[][] tilesArray, float ax, float ay, float dx, float dy) {
+    if (collideTile(tilesArray,position.x+ax, position.y+ay)
+      || collideTile(tilesArray,position.x+ax+dx, position.y+ay+dy) 
+      || collideTile(tilesArray,position.x+ax-dx, position.y+ay-dy)) return true;
     return false;
   }
 }

@@ -9,7 +9,7 @@ class DroppedWeapon extends Entity {
     orientation = random(TWO_PI);
   }
 
-  public void render() {
+  public void render(PImage[] image) {
     pushMatrix();
     translate(dispPos.x,dispPos.y);
     scale(1.33);

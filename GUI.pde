@@ -19,24 +19,32 @@ class GUI {
   }
   
   private void displayWords() {
+    fill(255);
+    strokeWeight(1.5);
+    stroke(255,0,0);
+    rectMode(CORNER);
+    rect(22,30,265,67);
+    rectMode(CENTER);
+    
     textAlign(LEFT);
     textSize(30);
     fill(0);
     String displayAmmo = nf(world.thisPlayer.round, 2, 0);
     if (world.weaponInfo[world.thisPlayer.weaponType][3] == -1) displayAmmo = "Inf";
     if (world.thisPlayer.weaponType == 0) displayAmmo = "NA";
-
+    
     text("Weapon: "+world.weaponName[world.thisPlayer.weaponType], 30, 60);
     text("Ammo: "+displayAmmo, 30, 90);
   }
 
   private void displayMinimap() {
-    fill(255, 0, 0);
-    noStroke();
+    strokeWeight(1.5/0.12);
+    stroke(255, 0, 0);
+    fill(255);
     pushMatrix();
     translate(width-140, 120);
     scale(0.12);
-    rect(0, 0, world.mapW+30, world.mapH+30);
+    rect(0, 0, world.mapW, world.mapH);
     image(image[1], 0, 0, world.mapW, world.mapH);
     strokeWeight(60);
     stroke(255, 0, 0);

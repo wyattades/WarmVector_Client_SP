@@ -15,10 +15,22 @@ abstract class Entity {
   
   abstract void update();
 
-  abstract void render();
+  abstract void render(PImage image[]);
+  
+  void updateCollideBox() {
+    collideBox.setRect(position.x-size.x/2,position.y-size.y/2,size.x,size.y);
+  }
 
   void updateDispPos() {
     dispPos.set(gui.dispPos(position));
+  }
+  
+  boolean collideTile(int[][] tilesArray, float x, float y) {
+    if (tilesArray == null) println("null");
+    x = x/World.tileSize;
+    y = y/World.tileSize;
+    if (tilesArray[int(x)][int(y)] != World.TILE_EMPTY) return true;
+    return false;
   }
 }
 

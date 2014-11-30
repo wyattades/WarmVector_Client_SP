@@ -8,7 +8,7 @@ Minim minim;
 String[] audioStrings = { //stores the names of all the audio files
 }; 
 String[] imageStrings = { //stores the names of all the image files
-  "leveltiles_01", "levelmap_01","enemy_0_0","enemy_0_1","gun_0"
+  "leveltiles_01", "levelmap_01","enemy_0_0","enemy_0_1","gun_0","bullet"
 }; 
 AudioPlayer[] audio = new AudioPlayer[audioStrings.length]; //creates an array for the audio files
 PImage[] image = new PImage[imageStrings.length]; //creates an array for the image files
@@ -55,16 +55,14 @@ void loadFiles() {
 }
 
 void draw() {
-  background(255);
+  background(200);
   if (stage == 1) {
     startmenu.render();
     startmenu.update();
   } else if (stage == 2 || stage == 3) {
     world.update();
-    world.updateEnemies();
     gui.update();
     world.render();
-    world.renderEnemies();
     gui.render();
   } else if (stage == 10) {
     exit();

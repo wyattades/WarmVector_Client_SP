@@ -23,7 +23,7 @@ public class World {
       0, 0, 0, 0, 0
     }
     , {
-      50, .06, 1, 60, 100
+      100, .06, 1, 60, 100
     }
     , {
       500, .01, 1, 12, 400
@@ -59,60 +59,17 @@ public class World {
     thisPlayer.username = "Good Guy";
   }
 
-  public void updateEnemies() {
-    for (int i = 0; i < enemies.size(); i++) {
-      Enemy e = enemies.get(i);
-      if (e.lineOfSight(thisPlayer.position, tiles) && e.distBetween(thisPlayer.position).mag() < 400) {
-        if (e.lookingAt(thisPlayer.position, 0.05)) {
-          addBullets(e);
-          e.velocity.set(0,0,0);
-        } else { 
-          e.orientTo(thisPlayer.position, 0.1);
-          if (e.distBetween(thisPlayer.position).mag() > 100) e.goTowards(this,thisPlayer.position, 3.5);
-          else e.velocity.set(0,0,0);
-        }
-      } else {
-        e.patrol(this, 2.5);
-        PVector lookPos = new PVector(e.position.x+e.velocity.x,e.position.y+e.velocity.y);
-        if (!e.lookingAt(lookPos,0.06)) e.orientTo(lookPos,0.12);
-      }
-      e.updatePosition();
-      e.updateDispPos();
-    }
-  }
-
-  public void renderEnemies() {
+  public void update() {
     for (int i = 0; i < enemies.size (); i++) {
       Enemy e = enemies.get(i);
-      e.render();
+      e.update(thisPlayer);
     }
-  }
-
-  public void update() {
-
-    if (thisPlayer.state == false && thisPlayer.weaponType != 0) {
-      addDroppedWeapon(thisPlayer);
-    }
-
     for (int i = 0; i < bullets.size (); i++) {
       Vector_Bullet b = bullets.get(i);
       b.update();
     }
-
-    thisPlayer.updateLife();
     if (input.mouseLeft) addBullets(thisPlayer);
-    if (input.mouseRight) thisPlayer.changeGun();
-
-    thisPlayer.velocity.set(0, 0, 0);
-    if (input.keyLeft && input.keyRight); 
-    else if (input.keyLeft) thisPlayer.updateVelX(this, -8);
-    else if (input.keyRight) thisPlayer.updateVelX(this, 8);
-    if (input.keyUp && input.keyDown);
-    else if (input.keyUp) thisPlayer.updateVelY(this, -8);
-    else if (input.keyDown) thisPlayer.updateVelY(this, 8);
-    thisPlayer.updatePosition();
-    thisPlayer.dispPos.set(gui.PdispPos());
-    thisPlayer.updateAngle();
+    thisPlayer.update(input, tilesArray);
 
     for (int i = 0; i < droppedWeps.size (); i++) {
       DroppedWeapon dw = droppedWeps.get(i);
@@ -131,22 +88,26 @@ public class World {
         bullets.remove(b);
       }
     }
+    if (thisPlayer.state == false && thisPlayer.weaponType != 0) {
+      addDroppedWeapon(thisPlayer);
+    }
   }
 
   public void render() {
-    displayBackgroundImage();
-
     for (int i = 0; i < bullets.size (); i++) {
       Vector_Bullet b = bullets.get(i);
       b.render();
     }
-
+    displayBackgroundImage();
+    for (int i = 0; i < enemies.size (); i++) {
+      Enemy e = enemies.get(i);
+      e.render(image);
+    }
     for (int i = 0; i < droppedWeps.size (); i++) {
       DroppedWeapon dw = droppedWeps.get(i);
-      dw.render();
+      dw.render(image);
     }
-
-    thisPlayer.render();
+    thisPlayer.render(image);
   }
 
   void addDroppedWeapon(Player p) {
@@ -156,7 +117,9 @@ public class World {
   public void addBullets(Player p) {
     if (p.weaponType != 0 && millis()-p.bulletTime>weaponInfo[p.weaponType][0] && p.round > 0) {
       for (int i = 0; i < weaponInfo[p.weaponType][2]; i++) {
-        bullets.add(new Vector_Bullet(p.position.x, p.position.y, p.orientation, weaponInfo[p.weaponType][1], weaponInfo[p.weaponType][4]));
+        PVector gunLength = new PVector(50, 0);
+        gunLength.rotate(p.orientation);
+        bullets.add(new Vector_Bullet(p.position.x+gunLength.x, p.position.y+gunLength.y, p.orientation, weaponInfo[p.weaponType][1], weaponInfo[p.weaponType][4]));
       }
       p.bulletTime = millis();
       p.round--;
@@ -171,6 +134,10 @@ public class World {
       }
     }
   }
+  
+  Enemy addEnemy(int posx, int posy) {
+    return new Enemy(posx, posy, 48, 48, 1, 60, random(-1, 1), random(-1, 1),tilesArray,tiles);
+  }
 
   int[][] getLevelArray() {
     int[][] values = new int[gridW][gridH];
@@ -179,22 +146,14 @@ public class World {
         values[i][j] = image[level].get(i, j);
         if (values[i][j] == color(0)) values[i][j] = TILE_SOLID;
         else if (values[i][j] == color(0, 0, 255)) values[i][j] = TILE_WINDOW;
-        else if (values[i][j] == color(255,0,0)) {
-          enemies.add(new Enemy(i*tileSize, j*tileSize, 48, 48, 1, 60, random(-1,1),random(-1,1)));
+        else if (values[i][j] == color(255, 0, 0)) {
+          enemies.add(addEnemy(i*tileSize,j*tileSize));
           values[i][j] = TILE_EMPTY;
-        }
-        else values[i][j] = TILE_EMPTY;
+        } else values[i][j] = TILE_EMPTY;
         if (i==0||i==gridW-1||j==0||j==gridH-1) values[i][j] = TILE_SOLID;
       }
     }
     return values;
-  }
-
-  public boolean collideTile(float x, float y) {
-    x = x/tileSize;
-    y = y/tileSize;
-    if (tilesArray[int(x)][int(y)] != TILE_EMPTY) return true;
-    return false;
   }
 
   private void displayBackgroundImage() {
