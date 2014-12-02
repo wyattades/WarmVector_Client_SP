@@ -14,8 +14,7 @@ String[] imageStrings = { //stores the names of all the image files
 PImage[] hitParticles;
 PImage[] help;
 AudioPlayer[] audio = new AudioPlayer[audioStrings.length]; //creates an array for the audio files
-PImage[] image = new PImage[imageStrings.length]; //creates an array for the image files
-
+PImage[] image = new PImage[imageStrings.length]; //creates an array for the image file
 Input input;
 World world;
 GUI gui;
