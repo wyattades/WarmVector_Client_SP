@@ -1,22 +1,27 @@
 class Player extends Entity {
-  
+
   float round, topSpeed;
-  int bulletTime, weaponType;
+  int bulletTime, weaponType ,shootTime;
   PVector velocity;
   int[][] tilesArray;
   ArrayList<Tile> tiles;
+  PImage gunpose, normalpose, gun;
 
-  Player(float i_x, float i_y, float w, float h, int weaponType, int[][] tilesArray, ArrayList<Tile> tiles) {
+  Player(float i_x, float i_y, float w, float h, int weaponType, int[][] tilesArray, ArrayList<Tile> tiles, PImage gunpose, PImage normalpose, PImage gun) {
     super(i_x, i_y, w, h);
     round = Info.weaponInfo[weaponType][3];
     topSpeed = 8;
+    shootTime = millis();
     bulletTime = millis();
     this.weaponType = weaponType;
     this.round = round;
     this.tilesArray = tilesArray;
     this.tiles = tiles;
+    this.gunpose = gunpose;
+    this.normalpose = normalpose;
+    this.gun = gun;
     velocity = new PVector(0, 0);
-    hit = color(255,0,0);
+    hit = color(255, 0, 0);
   }
 
   void update() {
@@ -27,19 +32,19 @@ class Player extends Entity {
     position.add(velocity);
   }
 
-  void render(PImage image1, PImage image2, PImage gun) {
+  void render() {
     pushMatrix();
     translate(dispPos.x, dispPos.y);
     rotate(orientation);   
-    scale(1.333);
+    scale(1.33);
     if (weaponType != 0) {
-      image(image1, 0, 0);
+      image(gunpose, 0, 0);
       image(gun, 24, 2);
     } else
-      image(image2, 0, 0);
+      image(normalpose, 0, 0);
     popMatrix();
   }
-  
+
   void updateLife() {
     if (health <= 0) {
       health = 0;

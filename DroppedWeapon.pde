@@ -2,21 +2,22 @@ class DroppedWeapon extends Entity {
 
   int type;
   float rounds;
-  
+  PImage gun;
 
-  DroppedWeapon(float i_x, float i_y, float w, float h, int type, float i_rounds) {
+  DroppedWeapon(PImage gun, float i_x, float i_y, float w, float h, int type, float i_rounds) {
     super(i_x, i_y, w, h);
+    this.gun = gun;
     this.type = type;
     rounds = i_rounds;
     orientation = random(TWO_PI);
   }
 
-  public void render(PImage[] image) {
+  public void render() {
     pushMatrix();
     translate(dispPos.x, dispPos.y);
-    scale(1.33);
     rotate(orientation);
-    image(image[type+5], 0, 0);
+    scale(1.33);
+    image(gun, 0, 0);
     popMatrix();
   }
 
@@ -24,16 +25,9 @@ class DroppedWeapon extends Entity {
     updateDispPos();
   }
 
-  public boolean checkPickUp(Player p) {
-    if (input.mouseRight && p.weaponType == 0 && collideBox.intersects(p.position.x, p.position.y, p.size.x, p.size.y)) {
-      if (millis()-world.mouseRightTime>500) {
-        world.mouseRightTime = millis();
-        p.weaponType = type;
-        p.round = rounds;
-        return true;
-      }
-    }
+  public boolean collidePlayer(Player p) {
+    if (collideBox.intersects(p.position.x, p.position.y, p.size.x, p.size.y)) 
+      return true;
     return false;
   }
 }
-

@@ -1,14 +1,17 @@
 class Enemy extends Player {
 
-  Enemy(float i_x, float i_y, float w, float h, int weaponType, float i_vx, float i_vy, int[][] tilesArray, ArrayList<Tile> tiles) {
-    super(i_x, i_y, w, h, weaponType, tilesArray, tiles);
+  Enemy(float i_x, float i_y, float w, float h, int weaponType, float i_vx, float i_vy, int[][] tilesArray, ArrayList<Tile> tiles, PImage gunpose, PImage normalpose, PImage gun) {
+    super(i_x, i_y, w, h, weaponType, tilesArray, tiles, gunpose, normalpose, gun);
     velocity.set(i_vx, i_vy, 0);
   }
 
   void update(ThisPlayer thisPlayer) {    
     if (lineOfSight(thisPlayer.position) && distBetween(thisPlayer.position).mag() < 400) {
       if (lookingAt(thisPlayer.position, 0.05)) {
-        world.addBullets(this);
+        if (millis()-shootTime>300) {
+          world.addBullets(this);
+          shootTime = millis();
+        }
         velocity.set(0, 0, 0);
       } else { 
         orientTo(thisPlayer.position, 0.1);

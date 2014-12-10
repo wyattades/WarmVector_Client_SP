@@ -3,36 +3,37 @@
 import gifAnimation.*;
 import ddf.minim.*;
 import java.awt.geom.*;
+import java.io.File;
 
 //String[] config = loadStrings("..\..\WarmVector\config.txt");
 Minim minim;
-String[] audioStrings = { //stores the names of all the audio files
-}; 
-String[] imageStrings = { //stores the names of all the image files
-  "leveltiles_01", "levelmap_01", "player_0_0", "player_0_1", "player_1_0", "player_1_1", "gun_0", "gun_1","gun_2","gun_3","bullet"
-}; 
-PImage[] hitParticles;
-PImage[] help;
-AudioPlayer[] audio = new AudioPlayer[audioStrings.length]; //creates an array for the audio files
-PImage[] image = new PImage[imageStrings.length]; //creates an array for the image file
-Input input;
-World world;
-GUI gui;
-StartMenu startMenu;
-Sprite helpMenu;
+private HashMap<String, PImage[]> image;
+private ArrayList<AudioPlayer> audio;
+private Input input;
+private World world;
+private GUI gui;
+private StartMenu startMenu;
+private Sprite helpMenu;
 
-int level;
+private int level;
 
 boolean sketchFullScreen() {
   return false;
 }
 
 void beginProgram() {
-  level = 0;
-  world = new World();
-  gui = new GUI();
+  level = 1;
+  world = new World(level, image);
+  gui = new GUI(world, image.get("levelmap_"+nf(level, 2, 0))[0], level);
   startMenu = new StartMenu();
+  helpMenu = new Sprite(image.get("help"), width/2, height/2, 600, 450, 0, 0, 750, true, false, 255);
   startMenu.stage = 1;
+}
+
+void nextWorld() {
+  level++;
+  world = new World(level, image);
+  gui = new GUI(world, image.get("levelmap_"+nf(level, 2, 0))[0], level);
 }
 
 void setup() {
@@ -42,21 +43,29 @@ void setup() {
   rectMode(CENTER);
   imageMode(CENTER);
   textAlign(CENTER);
+  audio = new ArrayList<AudioPlayer>();
+  image = new HashMap<String, PImage[]>(17);
   input = new Input();
   minim = new Minim(this);
   loadFiles();
-  hitParticles = Gif.getPImages(this, "hit.gif");
-  help = Gif.getPImages(this, "help.gif");
-  helpMenu = new Sprite(help, width,height+100, 600, 450, 0, image.length, 750, true, 255);
   beginProgram();
 }
 
 void loadFiles() {
-  for (int i = 0; i < audioStrings.length; i++) { //loads all audio files
-    audio[i] = minim.loadFile(audioStrings[i]+".mp3");
-  }
-  for (int i = 0; i < imageStrings.length; i++) { //loads all images
-    image[i] = loadImage(imageStrings[i]+".png");
+  String dir = sketchPath + "/data/";
+  File file = new File(dir);
+  File[] files = file.listFiles();
+
+  for (int i = 0; i < files.length; i++) {
+    if (files[i].getName().contains(".gif") )
+      image.put(files[i].getName().replace(".gif", ""), Gif.getPImages(this, files[i].getName()));
+    else if ( files[i].getName().contains(".png") )
+      image.put( files[i].getName().replace(".png", ""), new PImage[] { 
+        loadImage(files[i].getName())
+      } 
+    );
+    else if ( files[i].getName().contains(".wav") )
+      audio.add(minim.loadFile(files[i].getName()+".wav"));
   }
 }
 

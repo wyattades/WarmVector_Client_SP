@@ -31,7 +31,7 @@ class Vector_Bullet {
             previousDist = dist;
             hitEntity = t;
           } else if (t.type == Info.TILE_WINDOW) {
-            world.sprites.add(new Sprite(image, t.position.x, t.position.y, 0, 0, shot.heading()+3.14, image.length, 50, false, t.hit));
+            world.sprites.add(new Sprite(image, t.position.x, t.position.y, 0, 0, shot.heading()+3.14, 0, 50, false, true, t.hit));
           }
         }
       }
@@ -58,6 +58,7 @@ class Vector_Bullet {
 
     hitEntity.health -= damage;
     dispPos = gui.dispPos(i_pos).get();
+    world.sprites.add(new Sprite(image, i_pos.x+shot.x, i_pos.y+shot.y, 0, 0, orientation+3.14, 0, 50, false, true, hitEntity.hit));
   }
 
   void update() {
@@ -71,7 +72,6 @@ class Vector_Bullet {
     PVector gunLength = new PVector(50, 0);
     gunLength.rotate(orientation);
     line(dispPos.x+gunLength.x, dispPos.y+gunLength.y, dispPos.x+shot.x, dispPos.y+shot.y);
-    world.sprites.add(new Sprite(image, i_pos.x+shot.x, i_pos.y+shot.y, 0, 0, orientation+3.14, image.length, 50, false, hitEntity.hit));
   }
 }
 
