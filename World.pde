@@ -1,16 +1,16 @@
 
 public class World {
 
-  ArrayList<Enemy> enemies;
-  ArrayList<Tile> tiles;
-  ArrayList<Sprite> sprites;
-  ArrayList<Vector_Bullet> bullets;
-  ArrayList<DroppedWeapon> droppedWeps;
-  int[][] tilesArray;
-  float dispW, dispH, mapW, mapH;
-  int gridW, gridH;
-  HashMap<String, PImage[]> imgs;
-  ThisPlayer thisPlayer;
+  private ArrayList<Enemy> enemies;
+  private ArrayList<Tile> tiles;
+  private ArrayList<Sprite> sprites;
+  private ArrayList<Vector_Bullet> bullets;
+  private ArrayList<DroppedWeapon> droppedWeps;
+  private int[][] tilesArray;
+  private float dispW, dispH, mapW, mapH;
+  private int gridW, gridH;
+  private HashMap<String, PImage[]> imgs;
+  private ThisPlayer thisPlayer;
 
   World(int level, HashMap<String, PImage[]> imgs) {
     tiles = new ArrayList<Tile>();
@@ -43,7 +43,7 @@ public class World {
       Vector_Bullet b = bullets.get(i);
       b.update();
     }
-    if (input.mouseLeft && millis()-thisPlayer.shootTime > 300) {
+    if (input.mouseLeft) {
       addBullets(thisPlayer);
     }
     thisPlayer.update(input);
@@ -73,6 +73,7 @@ public class World {
         bullets.remove(i);
       }
     }
+    if (enemies.size() == 0) nextWorld();
   }
 
   public void render() {

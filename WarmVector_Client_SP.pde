@@ -22,10 +22,9 @@ boolean sketchFullScreen() {
 }
 
 void beginProgram() {
-  level = 1;
   world = new World(level, image);
   gui = new GUI(world, image.get("levelmap_"+nf(level, 2, 0))[0], level);
-  startMenu = new StartMenu();
+  startMenu = new StartMenu(level);
   helpMenu = new Sprite(image.get("help"), width/2, height/2, 600, 450, 0, 0, 750, true, false, 255);
   startMenu.stage = 1;
 }
@@ -33,6 +32,8 @@ void beginProgram() {
 void nextWorld() {
   level++;
   world = new World(level, image);
+  startMenu = new StartMenu(level);
+  startMenu.stage = 3;
   gui = new GUI(world, image.get("levelmap_"+nf(level, 2, 0))[0], level);
 }
 
@@ -43,6 +44,7 @@ void setup() {
   rectMode(CENTER);
   imageMode(CENTER);
   textAlign(CENTER);
+  level = 1;
   audio = new ArrayList<AudioPlayer>();
   image = new HashMap<String, PImage[]>(17);
   input = new Input();

@@ -8,7 +8,7 @@ class Enemy extends Player {
   void update(ThisPlayer thisPlayer) {    
     if (lineOfSight(thisPlayer.position) && distBetween(thisPlayer.position).mag() < 400) {
       if (lookingAt(thisPlayer.position, 0.05)) {
-        if (millis()-shootTime>300) {
+        if (millis()-shootTime > 300) {
           world.addBullets(this);
           shootTime = millis();
         }
