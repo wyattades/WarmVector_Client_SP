@@ -3,11 +3,12 @@ class ThisPlayer extends Player {
   float rotateDist = 80;
   int startTime;
 
-  ThisPlayer(float i_x, float i_y, float w, float h, int weaponType, int[][] tilesArray, ArrayList<Tile> tiles, PImage gunpose, PImage normalpose, PImage gun) {
-    super(i_x, i_y, w, h, weaponType, tilesArray, tiles, gunpose, normalpose, gun);
+  ThisPlayer(float i_x, float i_y, float w, float h, float orientation, int weaponType, World world, PImage gunpose, PImage normalpose, PImage gun) {
+    super(i_x, i_y, w, h, orientation, weaponType, gunpose, normalpose, gun, world);
     topSpeed = 10;
     velocity = new PVector(0, 0);
     rotateDist = 80;
+    health = 150;
   }
 
   void update(Input input) {
@@ -49,12 +50,10 @@ class ThisPlayer extends Player {
     else if (input.keyDown) updateVelY(topSpeed);
     if (velocity.mag()>topSpeed) velocity.setMag(topSpeed);
     updatePosition();
-    dispPos.set(gui.PdispPos());
-    updateAngle();
   }
 
-  private void updateAngle() {
-    orientation = atan2(gui.cursor.y-dispPos.y, gui.cursor.x-dispPos.x);
+  private void updateAngle(PVector cursor) {
+    orientation = atan2(cursor.y-dispPos.y, cursor.x-dispPos.x);
   }
 }
 

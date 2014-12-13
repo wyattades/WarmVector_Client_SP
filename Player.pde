@@ -1,22 +1,26 @@
-class Player extends Entity {
+class Player extends Body {
 
   float round, topSpeed;
-  int bulletTime, weaponType ,shootTime;
-  PVector velocity;
+  int bulletTime, weaponType, shootTime;
+  PVector velocity,size;
   int[][] tilesArray;
   ArrayList<Tile> tiles;
   PImage gunpose, normalpose, gun;
+  World world;
 
-  Player(float i_x, float i_y, float w, float h, int weaponType, int[][] tilesArray, ArrayList<Tile> tiles, PImage gunpose, PImage normalpose, PImage gun) {
-    super(i_x, i_y, w, h);
+  Player(float i_x, float i_y, float w, float h, float orientation, int weaponType, PImage gunpose, PImage normalpose, PImage gun, World world) {
+    super(i_x, i_y, w, h, orientation);
     round = Info.weaponInfo[weaponType][3];
+    size = new PVector(w,h);
     topSpeed = 8;
+    health = 100;
     shootTime = millis();
     bulletTime = millis();
     this.weaponType = weaponType;
     this.round = round;
-    this.tilesArray = tilesArray;
-    this.tiles = tiles;
+    this.tilesArray = world.tilesArray;
+    this.tiles = world.tiles;
+    this.world = world;
     this.gunpose = gunpose;
     this.normalpose = normalpose;
     this.gun = gun;

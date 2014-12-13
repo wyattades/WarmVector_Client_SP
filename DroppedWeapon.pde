@@ -1,11 +1,13 @@
-class DroppedWeapon extends Entity {
+class DroppedWeapon extends Body {
 
   int type;
   float rounds;
   PImage gun;
+  PVector size;
 
-  DroppedWeapon(PImage gun, float i_x, float i_y, float w, float h, int type, float i_rounds) {
-    super(i_x, i_y, w, h);
+  DroppedWeapon(PImage gun, float i_x, float i_y, float w, float h, float orientation, int type, float i_rounds) {
+    super(i_x, i_y, w, h, orientation);
+    size = new PVector(w,h);
     this.gun = gun;
     this.type = type;
     rounds = i_rounds;
@@ -22,7 +24,7 @@ class DroppedWeapon extends Entity {
   }
 
   public void update() {
-    updateDispPos();
+
   }
 
   public boolean collidePlayer(Player p) {

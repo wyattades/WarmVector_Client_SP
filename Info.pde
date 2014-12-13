@@ -5,6 +5,7 @@ static class Info {
   static final int TILE_SOLID = 1;
   static final int TILE_WINDOW = 2;
   static final int CREATE_ENEMY = 3;
+  static final int CREATE_THISPLAYER = 4;
 
   // {frequency,spread,amount,cartridge,damage};
   static final float[][] weaponInfo = {
@@ -12,21 +13,22 @@ static class Info {
       0, 0, 0, 0, 0
     }
     , {
-      100, .06, 1, 100000, 100
+      80, .04, 1, 90, 30
     }
     , {
-      500, .01, 1, 12, 400
+      750, .01, 1, 12, 100
     }
     , {
-      20, .12, 1, 200, 50
+      40, .18, 1, 200, 17
     }
     , {
-      750, .20, 6, 12, 150
+      500, .22, 6, 12, 24
     }
   };
 
   static final String[] weaponName = {
-    "None", "M4 Rifle", "Barret 50Cal", "LMG", "Remington"
+    "None", "M4 Rifle", "Barrett 50Cal", "LMG", "Remington"
   };
+  
 }
 

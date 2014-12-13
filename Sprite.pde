@@ -1,31 +1,25 @@
-class Sprite {
+class Sprite extends Body {
 
-  PVector pos, size, dispPos;
   PImage[] img;
   int frame, skipTime, time, count;
-  float orientation, scale;
-  boolean state, repeat, adjustPos;
+  float scale;
+  boolean repeat, adjustPos;
   color shade;
 
   Sprite(PImage[] img, float i_x, float i_y, float w, float h, float orientation, float scale, int skipTime, boolean repeat, boolean adjustPos, color shade) {
-    pos = new PVector(i_x, i_y);
-    size = new PVector(w, h);
-    dispPos = gui.dispPos(pos).get();
+    super(i_x,i_y,w,h,orientation);
     this.scale = scale;
     this.img = img;
     count = img.length;
     this.skipTime = skipTime;
     this.repeat = repeat;
     this.shade = shade;
-    this.orientation = orientation;
     this.adjustPos = adjustPos;
     frame = 0;
     time = millis();
-    state = true;
   }
 
   void update() {
-    dispPos.set(gui.dispPos(pos));
     if (count > 1) {
       if (millis()-time > skipTime) {
         frame++;
@@ -43,7 +37,7 @@ class Sprite {
     imageMode(CENTER);
     pushMatrix();
     if (adjustPos) translate(dispPos.x, dispPos.y);
-    else translate(pos.x, pos.y);
+    else translate(position.x, position.y);
     if (orientation != 0) rotate(orientation);  
     if (scale != 0) scale(scale); 
     if (shade != 255) tint(shade);

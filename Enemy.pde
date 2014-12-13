@@ -1,7 +1,7 @@
 class Enemy extends Player {
 
-  Enemy(float i_x, float i_y, float w, float h, int weaponType, float i_vx, float i_vy, int[][] tilesArray, ArrayList<Tile> tiles, PImage gunpose, PImage normalpose, PImage gun) {
-    super(i_x, i_y, w, h, weaponType, tilesArray, tiles, gunpose, normalpose, gun);
+  Enemy(float i_x, float i_y, float w, float h, float orientation, int weaponType, World world, float i_vx, float i_vy,  PImage gunpose, PImage normalpose, PImage gun) {
+    super(i_x, i_y, w, h, orientation, weaponType, gunpose, normalpose, gun, world);
     velocity.set(i_vx, i_vy, 0);
   }
 
@@ -24,7 +24,6 @@ class Enemy extends Player {
       if (!lookingAt(lookPos, 0.06)) orientTo(lookPos, 0.12);
     }
     updatePosition();
-    updateDispPos();
     updateLife();
   }
 
