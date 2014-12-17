@@ -3,15 +3,16 @@ class Input {
   boolean keyUp, keyLeft, keyRight, keyDown, mouseLeft, mouseRight, tab;
   int mouseRightTime, mouseLeftTime;
   PVector mousePos;
+  int inputTime;
 
   Input() {
     keyUp = keyLeft = keyRight = keyDown = mouseLeft = mouseRight = tab = false;
     mouseRightTime = mouseLeftTime = 0;
-    mousePos = new PVector(0,0);
+    mousePos = new PVector(0, 0);
   }
-  
+
   void updateMouse(int mousex, int mousey) {
-    mousePos.set(mousex,mousey);
+    mousePos.set(mousex, mousey);
   }
 
   void pressMouse(int mouseButton) {

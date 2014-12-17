@@ -54,8 +54,10 @@ class Button {
   }
 
   boolean overClick() {
-    if (overBox() && input.mouseLeft == true) 
+    if (overBox() && input.mouseLeft == true) {
+      input.inputTime = millis();
       return true;    
+    }
     return false;
   }
 

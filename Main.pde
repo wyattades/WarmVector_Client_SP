@@ -61,10 +61,7 @@ class Main {
       if (files[i].getName().contains(".gif") )
         image.put(files[i].getName().replace(".gif", ""), Gif.getPImages(parent, files[i].getName()));
       else if ( files[i].getName().contains(".png") )
-        image.put( files[i].getName().replace(".png", ""), new PImage[] { 
-          loadImage(files[i].getName())
-        } 
-      );
+        image.put( files[i].getName().replace(".png", ""), new PImage[] {loadImage(files[i].getName())} );
       else if ( files[i].getName().contains(".wav") )
         audio.add(minim.loadFile(files[i].getName()+".wav"));
     }
