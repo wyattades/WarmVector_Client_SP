@@ -7,16 +7,15 @@ class Enemy extends Player {
 
   void update(ThisPlayer thisPlayer) {    
     if (lineOfSight(thisPlayer.position) && distBetween(thisPlayer.position).mag() < 400) {
+      if (distBetween(thisPlayer.position).mag() > 100) goTowards(thisPlayer.position, 3.5);
+      else velocity.set(0,0,0);
       if (lookingAt(thisPlayer.position, 0.05)) {
         if (millis()-shootTime > 300) {
           world.addBullets(this);
           shootTime = millis();
         }
-        velocity.set(0, 0, 0);
       } else { 
         orientTo(thisPlayer.position, 0.1);
-        if (distBetween(thisPlayer.position).mag() > 100) goTowards(thisPlayer.position, 3.5);
-        else velocity.set(0, 0, 0);
       }
     } else {
       patrol(2.5);
