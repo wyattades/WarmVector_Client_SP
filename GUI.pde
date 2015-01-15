@@ -25,12 +25,12 @@ class GUI {
     textSize(30);
     fill(255,180);
     String displayAmmo = nf(world.thisPlayer.round, 2, 0);
-    if (Info.weaponInfo[world.thisPlayer.weaponType][3] == -1) displayAmmo = "Inf";
-    if (world.thisPlayer.weaponType == 0) displayAmmo = "NA";
     pushMatrix();
     translate(width-40,height-90);
     text("Weapon: "+Info.weaponName[world.thisPlayer.weaponType], 0, 0);
-    text("Ammo: "+displayAmmo+"/"+nf(Info.weaponInfo[world.thisPlayer.weaponType][3],2,0), 0, 30);
+    if (Info.weaponInfo[world.thisPlayer.weaponType][3] == -1) text("Ammo: Inf", 0, 30);
+    else if (world.thisPlayer.weaponType == 0) text("Ammo: NA", 0, 30);
+    else text("Ammo: "+displayAmmo+"/"+nf(Info.weaponInfo[world.thisPlayer.weaponType][3],2,0), 0, 30);
     text("Health: "+nf(world.thisPlayer.health, 3, 0), 0, 60);
     popMatrix();
     text("Enemies: "+world.enemies.size(),width-40,60);
